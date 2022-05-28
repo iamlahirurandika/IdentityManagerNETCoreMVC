@@ -1,4 +1,5 @@
 ﻿using IdentityManager.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -18,6 +19,8 @@ namespace IdentityManager.Controllers
             return View();
         }
 
+        //Make visible only to signed in users 
+        [Authorize]
         public IActionResult Privacy()
         {
             return View();

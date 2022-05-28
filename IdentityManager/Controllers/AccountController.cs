@@ -55,22 +55,24 @@ namespace IdentityManager.Controllers
 
         //Login GET
         [HttpGet]
-        public  IActionResult Login()
+        public  IActionResult Login(string returnurl=null)
         {
+            ViewData["ReturnUrl"] = returnurl;
             return View();
         }
 
         //Login POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model)
+        public async Task<ActionResult> Login(LoginViewModel model, string returnurl=null)
         {
+            ViewData["ReturnUrl"] = returnurl;
             if (ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false); 
                 if(result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    return Redirect(returnurl);
                 }
                 else
                 {
