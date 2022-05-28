@@ -53,6 +53,34 @@ namespace IdentityManager.Controllers
            return View(model);
         }
 
+        //Login GET
+        [HttpGet]
+        public  IActionResult Login()
+        {
+            return View();
+        }
+
+        //Login POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Login(LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false); 
+                if(result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
+                    return View(model);
+                }
+            }
+            return View(model);
+        }
+
         //Logoff 
         //Post
         [HttpPost]
